@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ExplosionFloorSpikes
+  m_Shader: {fileID: 4800000, guid: 1526ec0aa5a0c9b4d80e6c6619e4cf6c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - DISSOLVE_ON
+  - EMISSION_ON
+  - TEXTURE_ON
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2999
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DissolveTex:
+        m_Texture: {fileID: 2800000, guid: da542699803f6b84687a66cf26f6738b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: a580eafb07c246746897d4e5d0a22648, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BlendMode: 0
+    - _CullMode: 2
+    - _Cutout: 0.5
+    - _DestBlend: 10
+    - _DissolveEdge: 0.24
+    - _EmissionIntensity: 30
+    - _SourceBlend: 5
+    - _StencilOp: 0
+    - _StencilRef: 1
+    - _SurfaceType: 1
+    - _ToggleCustomEmissionColor: 0
+    - _ToggleCutout: 0
+    - _ToggleDissolve: 1
+    - _ToggleEmission: 1
+    - _ToggleStencil: 0
+    - _ToggleTexture: 1
+    - _ZWrite: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

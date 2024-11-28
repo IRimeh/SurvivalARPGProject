@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Grass0
+  m_Shader: {fileID: 4800000, guid: 6a0f1abaed9ae9e4aa92099e6a2f5350, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - SHADOWS
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _HeightGradient:
+        m_Texture: {fileID: 2800000, guid: acf4ce38bed9f4c4f9674940182a41bd, type: 3}
+        m_Scale: {x: 0.25, y: 1}
+        m_Offset: {x: -0.06, y: 0}
+    - _HeightTex:
+        m_Texture: {fileID: 8400000, guid: 2c12249252dfa084e8994b4bc2e384aa, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HeightVariationTex:
+        m_Texture: {fileID: 2800000, guid: ad036e229352cf2449c1c5f939c35b59, type: 3}
+        m_Scale: {x: 0.002, y: 0.002}
+        m_Offset: {x: 0.002, y: 0.01}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: e498acd6c70d3b54582c43c6bf07d4ba, type: 3}
+        m_Scale: {x: 0.15, y: 0.15}
+        m_Offset: {x: 0, y: 0}
+    - _SplatMap:
+        m_Texture: {fileID: 1603768802084554413, guid: d630cb691b3b5e440a5708d2e3666251,
+          type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Cutoff: 0
+    - _GrassInstance: 0
+    - _GrassOffset: 0.05
+    - _HeightImpact: 0.443
+    - _MaxGrassOffset: 0.1
+    - _MinGrassOffset: 0.03
+    - _ShadowAtten: 1
+    - _Shadows: 1
+    - _TerrainMasking: 0
+    - _WindOffset: 0.4
+    - _WindSpeed: 0.5
+    m_Colors:
+    - _BottomGrassCol: {r: 0.17254902, g: 0.39607844, b: 0.22112973, a: 1}
+    - _BottomGrassCol1: {r: 0.16545035, g: 0.20754719, b: 0.17854987, a: 1}
+    - _TopGrassCol: {r: 0.258989, g: 0.5660378, b: 0.44008368, a: 1}
+    - _TopGrassCol1: {r: 0, g: 0.3679245, b: 0.18674316, a: 1}
+    - _TrampledGrassColor: {r: 0.17412779, g: 0.40566036, b: 0.31223497, a: 0.5019608}
+    - _VeryTipColor: {r: 0, g: 0.6792453, b: 0.20465033, a: 1}
+    - _VeryTipColor1: {r: 0.46057317, g: 0.8490566, b: 0.5773428, a: 1}
+    - _WindColor: {r: 0.64841354, g: 1, b: 0.6462264, a: 0.07450981}
+    - _WindDirection: {r: -1, g: -1, b: 1, a: 1}
+  m_BuildTextureStacks: []

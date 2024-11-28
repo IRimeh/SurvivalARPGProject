@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1157cec541708e7448a1fae04a06ef41, type: 3}
+  m_Name: ChunkPrefabLibrary
+  m_EditorClassIdentifier: 
+  Walls0Prefab: {fileID: 6341267610686712153, guid: 54237eaa8dbc63e449dd7823ce574b43,
+    type: 3}
+  Walls1Prefab: {fileID: 7999837709368193574, guid: da9317ceb51c9a34aa9ecdd29c88da9a,
+    type: 3}
+  Walls2Prefab: {fileID: 8276653934505489410, guid: 27b54e8b5788ab04ba25b1822b3e25b0,
+    type: 3}
+  Walls2OppositePrefab: {fileID: 5246981360879248449, guid: e0d024c4f9cc2bd4d90935dfd92b54ba,
+    type: 3}
+  Walls3Prefab: {fileID: 1925741933335342568, guid: 14a83548d1ff13e48bd9f389f71d73b9,
+    type: 3}
+  Walls4Prefab: {fileID: 4909797770996806137, guid: d2886369868be24469aff4053f0c8d6b,
+    type: 3}
