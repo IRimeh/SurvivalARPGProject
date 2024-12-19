@@ -1,12 +1,16 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerCamera : MonoBehaviour
 {
     [SerializeField] private PlayerController _player;
-    [SerializeField] private float _cameraDistance;
     [SerializeField] private float _cameraSensitivity = .1f;
     [SerializeField] private float _cameraRotLerpSpeed = 10.0f;
+    [SerializeField] private float _minCameraDistance;
+    [SerializeField] private float _maxCameraDistance;
+    [SerializeField] private float _cameraZoomSpeed;
 
+    private float _currentCameraDistance;
     private Vector3 _defaultCameraRot;
     private Vector3 _lastMousePos;
     private float _cameraRot = 0;
@@ -16,12 +20,14 @@ public class PlayerCamera : MonoBehaviour
     {
         _defaultCameraRot = transform.localRotation.eulerAngles;
         _lastMousePos = Input.mousePosition;
+        _currentCameraDistance = _maxCameraDistance;
     }
 
     private void Update()
     {
         RotateCamera();
         SetCameraPosition();
+        CameraZoom();
     }
 
     private void RotateCamera()
@@ -39,14 +45,20 @@ public class PlayerCamera : MonoBehaviour
 
     private void SetCameraPosition()
     {
-        transform.position = _player.transform.position + (-transform.forward * _cameraDistance);
+        transform.position = _player.transform.position + (-transform.forward * _currentCameraDistance);
+    }
+
+    private void CameraZoom()
+    {
+        _currentCameraDistance = Mathf.Clamp(_currentCameraDistance - Input.mouseScrollDelta.y * _cameraZoomSpeed, _minCameraDistance, _maxCameraDistance);
     }
 
     private void OnValidate()
     {
         if (Application.isPlaying)
             return;
-        
+
+        _currentCameraDistance = _maxCameraDistance;
         SetCameraPosition();
     }
 }

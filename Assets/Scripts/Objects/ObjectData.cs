@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ObjectData", menuName = "ScriptableObjects/ObjectData", order = 0)]
+[CreateAssetMenu(fileName = "ObjectData", menuName = "ScriptableObjects/Objects/ObjectData", order = 0)]
 public class ObjectData : ScriptableObject
 {
+    [ReadOnly]
     public int Id;
     public ObjectView Prefab;
     public List<ObjectBehaviour> Behaviours = new List<ObjectBehaviour>();

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ObjectDataLibrary", menuName = "ScriptableObjects/ObjectDataLibrary", order = 0)]
+[CreateAssetMenu(fileName = "ObjectDataLibrary", menuName = "ScriptableObjects/Objects/ObjectDataLibrary", order = 0)]
 public class ObjectDataLibrary : ScriptableObject
 {
     [SerializeField] 

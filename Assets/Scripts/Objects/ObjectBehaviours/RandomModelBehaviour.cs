@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "RandomModelBehaviour", menuName = "ScriptableObjects/ObjectBehaviours/RandomModelBehaviour", order = 0)]
+[CreateAssetMenu(fileName = "RandomModelBehaviour", menuName = "ScriptableObjects/Objects/ObjectBehaviours/RandomModelBehaviour", order = 0)]
 public class RandomModelBehaviour : ObjectBehaviour
 {
     [SerializeField] 

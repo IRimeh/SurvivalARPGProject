@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public ItemData _rockData;
+    public ItemManager _itemManager;
+    
     [Header("References")]
     [SerializeField]
     private Animator _animator;
@@ -63,6 +66,15 @@ public class PlayerController : MonoBehaviour
         UpdateAnimations();
         CheckGrounded();
         UpdateVFX();
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            _itemManager.SpawnItem(_rockData, 1, transform.position + Vector3.up, 1);
+        }
+        if (Input.GetKey(KeyCode.P))
+        {
+            _itemManager.SpawnItem(_rockData, 1, transform.position + Vector3.up, 1);
+        }
     }
 
     private void CheckGrounded()
