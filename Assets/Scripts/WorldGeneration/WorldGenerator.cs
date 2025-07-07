@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
@@ -13,6 +12,7 @@ public class WorldGenerator : MonoBehaviour
     public int _seed = 123456789;
     public bool _refreshSeedOnGeneration = false;
     public bool _generateOnAwake = false;
+    public WorldGeneratorLocator _worldGeneratorLocator;
 
     [Header("Generator Variables")] 
     public float _noiseTiling = 100;
@@ -28,6 +28,7 @@ public class WorldGenerator : MonoBehaviour
 
     private void Awake()
     {
+        _worldGeneratorLocator.Assign(this);
         GenerateWorld();
     }
 
@@ -70,6 +71,13 @@ public class WorldGenerator : MonoBehaviour
         }
     }
 
+    public bool TryGetChunkAtWorldPosition(Vector3 position, out Chunk chunk)
+    {
+        Vector3 playerPos = _player.transform.position / Chunk.ChunkSize;
+        Vector2Int chunkPos = new Vector2Int(Mathf.RoundToInt(playerPos.x), Mathf.RoundToInt(playerPos.z));
+        return _chunks.TryGetValue(chunkPos, out chunk);
+    }
+
     [Button]
     private void GenerateWorld()
     {
@@ -104,7 +112,8 @@ public class WorldGenerator : MonoBehaviour
             NeighborLeftHeight = GetHeight(pos + Vector2Int.left),
             NeighborForwardHeight = GetHeight(pos + Vector2Int.up),
             NeighborBackHeight = GetHeight(pos + Vector2Int.down),
-            Objects = new List<ObjectSaveData>()
+            Objects = new List<ObjectSaveData>(),
+            Items = new List<ItemSaveData>()
         };
                 
         Vector3 chunkPos = new Vector3(pos.x * Chunk.ChunkSize, 0, pos.y * Chunk.ChunkSize);
@@ -139,6 +148,7 @@ public class WorldGenerator : MonoBehaviour
 
         for (int i = _chunks.Count - 1; i >= 0; i--)
         {
+            _chunks.ElementAt(i).Value.DestroyChunk();
             Destroy(_chunks.ElementAt(i).Value.gameObject);
         }
         _chunks.Clear();
@@ -165,5 +175,21 @@ public class WorldGenerator : MonoBehaviour
         }
 
         _worldGenerated = true;
+    }
+
+    public WorldData GetWorldSaveData()
+    {
+        foreach (KeyValuePair<Vector2Int,Chunk> chunk in Chunks)
+        {
+            chunk.Value.SaveItems();
+        }
+        
+        WorldData worldData = new WorldData()
+        {
+            Seed = Seed,
+            Chunks = Chunks.Values.Select(c => c.Data).ToList()
+        };
+
+        return worldData;
     }
 }

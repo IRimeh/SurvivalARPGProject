@@ -47,3 +47,5 @@ MonoBehaviour:
   _chunkPrefabLibrary: {fileID: 11400000, guid: 6eb40385d5dbfd442a6e8fec3fd21b56,
     type: 2}
   _objectDataLibrary: {fileID: 11400000, guid: 871b9b2e4957c5846911012c0e056d04, type: 2}
+  _itemManager: {fileID: 11400000, guid: 3280c4a5cbce01f449a9ba6272ccf8c2, type: 2}
+  _itemDataLibrary: {fileID: 11400000, guid: 0e72280204891914f8b7220c29d11e88, type: 2}

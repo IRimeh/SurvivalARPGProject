@@ -14,4 +14,5 @@ public class ChunkData
     public int NeighborLeftHeight;
 
     public List<ObjectSaveData> Objects;
+    public List<ItemSaveData> Items;
 }

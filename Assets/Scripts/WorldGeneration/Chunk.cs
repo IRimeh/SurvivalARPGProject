@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Chunk : MonoBehaviour
@@ -5,18 +6,22 @@ public class Chunk : MonoBehaviour
     public static int ChunkSize = 25;
     public static int ChunkHeight = 10;
     public static int ObjectsRowCount = 5;
-    
 
     [SerializeField] 
     private ChunkPrefabLibrary _chunkPrefabLibrary;
     [SerializeField] 
     private ObjectDataLibrary _objectDataLibrary;
+    [SerializeField] 
+    private ItemManager _itemManager;
+    [SerializeField] 
+    private ItemDataLibrary _itemDataLibrary;
 
     private bool _chunkInitialized = false;
     private bool _chunkSpawned = false;
     private ChunkData _chunkData;
     private GameObject _terrain;
     private ObjectView[,] _objects;
+    private List<ItemView> _items = new List<ItemView>();
 
     public bool ChunkSpawned => _chunkSpawned;
     public ChunkData Data => _chunkData;
@@ -39,6 +44,7 @@ public class Chunk : MonoBehaviour
     {
         SpawnWalls();
         LoadObjects();
+        LoadItems();
         _chunkSpawned = true;
     }
 
@@ -50,6 +56,15 @@ public class Chunk : MonoBehaviour
         Destroy(_terrain);
 
         SaveObjects();
+        SaveItems();
+        DestroyObjects();
+        DestroyItems();
+        
+        _chunkSpawned = false;
+    }
+
+    private void DestroyObjects()
+    {
         for (int y = _objects.GetLength(1) - 1; y >= 0; y--)
         {
             for (int x = _objects.GetLength(0) - 1; x >= 0; x--)
@@ -61,8 +76,15 @@ public class Chunk : MonoBehaviour
                 }
             }
         }
-        
-        _chunkSpawned = false;
+    }
+
+    private void DestroyItems()
+    {
+        for (int i = _items.Count - 1; i >= 0; i--)
+        {
+            _itemManager.ReturnToPool(_items[i]);
+        }
+        _items.Clear();
     }
 
     private void GenerateObjects()
@@ -173,6 +195,20 @@ public class Chunk : MonoBehaviour
         }
     }
 
+    private void LoadItems()
+    {
+        for (int i = 0; i < _chunkData.Items.Count; i++)
+        {
+            ItemSaveData itemSaveData = _chunkData.Items[i];
+            _itemManager.SpawnItem(
+                _itemDataLibrary.GetItemFromID(itemSaveData.ID),
+                itemSaveData.Amount, 
+                itemSaveData.Position, 
+                0,
+                this);
+        }
+    }
+
     public void SaveObjects()
     {
         _chunkData.Objects.Clear();
@@ -194,8 +230,33 @@ public class Chunk : MonoBehaviour
         }
     }
 
+    public void SaveItems()
+    {
+        _chunkData.Items.Clear();
+        for (int i = 0; i < _items.Count; i++)
+        {
+            var itemView = _items[i];
+            _chunkData.Items.Add(new ItemSaveData()
+            {
+                ID = itemView.Item.Id,
+                Position = itemView.transform.position,
+                Amount = itemView.Item.Amount
+            });
+        }
+    }
+
     private void SetHeight()
     {
         transform.position = new Vector3(transform.position.x, Data.Height * Chunk.ChunkHeight, transform.position.z);
+    }
+
+    public void AddItem(ItemView itemView)
+    {
+        _items.Add(itemView);
+    }
+
+    public void RemoveItem(ItemView itemView)
+    {
+        _items.Remove(itemView);
     }
 }

@@ -15,6 +15,7 @@ public class ItemView : MonoBehaviour
     public Item Item => _item;
     public Rigidbody RigidBody => _rigidBody;
     public bool PickupAble => _pickupAble;
+    public Chunk Chunk { get; private set; }
 
     public void SetItem(Item item)
     {
@@ -23,6 +24,11 @@ public class ItemView : MonoBehaviour
         _meshFilter.sharedMesh = item.ItemData.ItemMesh;
         _pickupAble = false;
         StartCoroutine(IBecomePickupAble());
+    }
+
+    public void SetChunk(Chunk chunk)
+    {
+        Chunk = chunk;
     }
 
     private IEnumerator IBecomePickupAble()

@@ -17,3 +17,5 @@ MonoBehaviour:
   _initialItemPoolAmount: 500
   _itemLaunchForce: {x: 250, y: 250, z: 0}
   _maxRandLaunchForce: 2
+  _worldGeneratorLocator: {fileID: 11400000, guid: 0248ee9a5276f7c4c98f46e32df04103,
+    type: 2}

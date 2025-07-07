@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using NaughtyAttributes;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -19,12 +18,8 @@ public class WorldSerializer : MonoBehaviour
         {
             chunk.Value.SaveObjects();
         }
-        
-        WorldData worldData = new WorldData()
-        {
-            Seed = _worldGenerator.Seed,
-            Chunks = _worldGenerator.Chunks.Values.Select(c => c.Data).ToList()
-        };
+
+        WorldData worldData = _worldGenerator.GetWorldSaveData();
         
         JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto, DefaultValueHandling = DefaultValueHandling.Ignore };
         string worldDataJson = JsonConvert.SerializeObject(worldData, settings);

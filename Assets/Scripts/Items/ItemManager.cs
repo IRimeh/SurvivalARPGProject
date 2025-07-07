@@ -9,6 +9,7 @@ public class ItemManager : ScriptableObject
     [SerializeField] private int _initialItemPoolAmount = 100;
     [SerializeField] private Vector3 _itemLaunchForce;
     [SerializeField] [Range(1, 2)] private float _maxRandLaunchForce = 2.0f;
+    [SerializeField] private WorldGeneratorLocator _worldGeneratorLocator;
 
     private ItemManagerView _itemManagerView;
     private List<ItemView> _availableItemViewPool = new List<ItemView>();
@@ -32,7 +33,7 @@ public class ItemManager : ScriptableObject
         }
     }
     
-    public ItemView SpawnItem(ItemData itemData, int amount, Vector3 position, float launchForce = 1)
+    public ItemView SpawnItem(ItemData itemData, int amount, Vector3 position, float launchForce = 1, Chunk chunk = null)
     {
         ItemView newItem = null;
         if (_availableItemViewPool.Count <= 0)
@@ -62,7 +63,16 @@ public class ItemManager : ScriptableObject
         float randForce = Random.Range(1.0f, _maxRandLaunchForce);
         newItem.RigidBody.isKinematic = false;
         newItem.RigidBody.AddForce(force * (launchForce * randForce));
-        
+
+        if (chunk == null)
+            _worldGeneratorLocator.Instance.TryGetChunkAtWorldPosition(position, out chunk);
+
+        if (chunk != null)
+        {
+            chunk.AddItem(newItem);
+            newItem.SetChunk(chunk);
+        }
+
         return newItem;
     }
 
@@ -77,6 +87,8 @@ public class ItemManager : ScriptableObject
         _availableItemViewPool.Add(itemView);
         itemView.RigidBody.isKinematic = true;
         itemView.RigidBody.velocity = Vector3.zero;
+
+        itemView.Chunk.RemoveItem(itemView);
     }
 
     [Button]
