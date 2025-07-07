@@ -21,6 +21,7 @@ public class PlayerCamera : MonoBehaviour
         _defaultCameraRot = transform.localRotation.eulerAngles;
         _lastMousePos = Input.mousePosition;
         _currentCameraDistance = _maxCameraDistance;
+        _targetLocalRot = Quaternion.Euler(_defaultCameraRot.x, _cameraRot, _defaultCameraRot.z);
     }
 
     private void Update()
