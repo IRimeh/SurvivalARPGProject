@@ -184,12 +184,12 @@ public class PlayerController : MonoBehaviour
 
         targetDir = Quaternion.Euler(0, _cameraRotation, 0) * targetDir;
         targetDir.Normalize();
-        _targetVelocity = new Vector3(MaxSpeed * targetDir.x, _rigidBody.velocity.y, MaxSpeed * targetDir.z);
+        _targetVelocity = new Vector3(MaxSpeed * targetDir.x, _rigidBody.linearVelocity.y, MaxSpeed * targetDir.z);
     }
 
     private void UpdateVelocity()
     {
-        _rigidBody.velocity = Vector3.Lerp(_rigidBody.velocity, _targetVelocity, _acceleration * Time.deltaTime);
+        _rigidBody.linearVelocity = Vector3.Lerp(_rigidBody.linearVelocity, _targetVelocity, _acceleration * Time.deltaTime);
     }
 
     private void UpdateAnimations()

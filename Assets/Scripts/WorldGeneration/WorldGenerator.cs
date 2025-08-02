@@ -94,7 +94,10 @@ public class WorldGenerator : MonoBehaviour
             for (int x = -_worldSize + 1; x < _worldSize; x++)
             {
                 Vector2Int position = new Vector2Int(x, z);
-                GenerateChunk(position);
+                if(_chunks.ContainsKey(position))
+                    _chunks[position].SpawnChunk();
+                else
+                    GenerateChunk(position);
             }
         }
 

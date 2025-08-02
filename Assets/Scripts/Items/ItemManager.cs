@@ -86,7 +86,7 @@ public class ItemManager : ScriptableObject
         _usedItemViewPool.Remove(itemView);
         _availableItemViewPool.Add(itemView);
         itemView.RigidBody.isKinematic = true;
-        itemView.RigidBody.velocity = Vector3.zero;
+        itemView.RigidBody.linearVelocity = Vector3.zero;
 
         itemView.Chunk.RemoveItem(itemView);
     }

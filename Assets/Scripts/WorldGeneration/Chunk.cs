@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Chunk : MonoBehaviour
 {
@@ -22,13 +25,20 @@ public class Chunk : MonoBehaviour
     private GameObject _terrain;
     private ObjectView[,] _objects;
     private List<ItemView> _items = new List<ItemView>();
+    private List<int> _runningAsyncOperations = new List<int>();
+    private TaskCompletionSource<bool> _isRunningAsyncOperations = new TaskCompletionSource<bool>();
+
 
     public bool ChunkSpawned => _chunkSpawned;
     public ChunkData Data => _chunkData;
+
+
+    private bool _hasSetCompleted = false;
     
 
     public void InitChunk(ChunkData chunkData)
     {
+        _isRunningAsyncOperations = new TaskCompletionSource<bool>();
         _objects = new ObjectView[ObjectsRowCount, ObjectsRowCount];
         _chunkData = chunkData;
         SetHeight();
@@ -42,6 +52,8 @@ public class Chunk : MonoBehaviour
 
     public void SpawnChunk()
     {
+        _hasSetCompleted = false;
+        
         SpawnWalls();
         LoadObjects();
         LoadItems();
@@ -53,6 +65,14 @@ public class Chunk : MonoBehaviour
         if (!_chunkSpawned)
             return;
         
+        DestroyChunkAsync();
+    }
+
+    private async void DestroyChunkAsync()
+    {
+        if (_runningAsyncOperations.Count > 0)
+            await _isRunningAsyncOperations.Task;
+
         Destroy(_terrain);
 
         SaveObjects();
@@ -106,16 +126,12 @@ public class Chunk : MonoBehaviour
                         continue;
                     
                     ObjectData data = _objectDataLibrary.GetObjectFromID(1);
-                    ObjectView treeView = Instantiate(_objectDataLibrary.GetObjectFromID(1).Prefab, transform);
-                    treeView.InitObjectData(data, this, new Vector2Int(x, y));
-                    _objects[x, y] = treeView;
+                    SpawnObjectViewAsync(data.Prefab, transform, data, this, new Vector2Int(x, y));
                 }
                 else if (rand > 20)
                 {
                     ObjectData data = _objectDataLibrary.GetObjectFromID(0);
-                    ObjectView rockView = Instantiate(_objectDataLibrary.GetObjectFromID(0).Prefab, transform);
-                    rockView.InitObjectData(data, this, new Vector2Int(x, y));
-                    _objects[x, y] = rockView;
+                    SpawnObjectViewAsync(data.Prefab, transform, data, this, new Vector2Int(x, y));
                 }
             }
         }
@@ -179,7 +195,11 @@ public class Chunk : MonoBehaviour
                 prefab = _chunkPrefabLibrary.Walls0Prefab;
                 break;
         }
-        _terrain = Instantiate(prefab, transform.position, rot, transform);
+        
+        SpawnGameObjectAsync(prefab, transform.position, rot, transform, spawnedTerrain =>
+        {
+            _terrain = spawnedTerrain;
+        });
     }
 
     private void LoadObjects()
@@ -188,12 +208,77 @@ public class Chunk : MonoBehaviour
         {
             ObjectSaveData objectSaveData = _chunkData.Objects[i];
             ObjectData data = _objectDataLibrary.GetObjectFromID(objectSaveData.ID);
-            ObjectView view = Instantiate(data.Prefab, transform);
-            view.InitObjectData(data, this, objectSaveData.Pos);
-            view.ApplyObjectSaveData(objectSaveData);
-            _objects[objectSaveData.Pos.x, objectSaveData.Pos.y] = view;
+            SpawnObjectViewAsync(data.Prefab, transform, data, this, objectSaveData.Pos, objectView =>
+            {
+                objectView.ApplyObjectSaveData(objectSaveData);
+            });
         }
     }
+    
+    
+    
+    private async void SpawnObjectViewAsync(ObjectView toSpawn, Transform parent, ObjectData objectData, Chunk chunk, Vector2Int relativePos, Action<ObjectView> onObjectViewInstantiated = null)
+    {
+        var asyncInstantiation = AsyncInstantiation();
+        int hashCode = asyncInstantiation.GetHashCode();
+        AddAsyncOperation(hashCode);
+        
+        var asyncResult = await asyncInstantiation;
+        
+        ObjectView spawnedObjectView = asyncResult[0];
+        spawnedObjectView.InitObjectData(objectData, chunk, relativePos);
+        _objects[relativePos.x, relativePos.y] = spawnedObjectView;
+        onObjectViewInstantiated?.Invoke(spawnedObjectView);
+        
+        RemoveAsyncOperation(hashCode);
+        
+        AsyncInstantiateOperation<ObjectView> AsyncInstantiation()
+        {
+            var result = InstantiateAsync(toSpawn, parent);
+            return result;
+        }
+    }
+
+    private async void SpawnGameObjectAsync(GameObject toSpawn, Vector3 position, Quaternion rotation, Transform parent, Action<GameObject> onGameObjectInstantiated = null)
+    {
+        var asyncInstantiation = AsyncInstantiation();
+        int hashCode = asyncInstantiation.GetHashCode();
+        AddAsyncOperation(hashCode);
+        
+        var asyncResult = await asyncInstantiation;
+        
+        GameObject spawnedGameObject = asyncResult[0];
+        onGameObjectInstantiated?.Invoke(spawnedGameObject);
+        
+        RemoveAsyncOperation(hashCode);
+        
+        AsyncInstantiateOperation<GameObject> AsyncInstantiation()
+        {
+            var result = InstantiateAsync(toSpawn, parent, position, rotation);
+            return result;
+        }
+    }
+    
+    
+
+    private void AddAsyncOperation(int hashCode)
+    {
+        _runningAsyncOperations.Add(hashCode);
+    }
+
+    private void RemoveAsyncOperation(int hashCode)
+    {
+        int countBeforeAdding = _runningAsyncOperations.Count;
+        _runningAsyncOperations.Remove(hashCode);
+
+        if (countBeforeAdding > 0 && _runningAsyncOperations.Count == 0)
+        {
+            _isRunningAsyncOperations.SetResult(true);
+            _isRunningAsyncOperations = new TaskCompletionSource<bool>();
+        }
+    }
+    
+    
 
     private void LoadItems()
     {
