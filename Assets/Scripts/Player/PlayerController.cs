@@ -103,7 +103,18 @@ public class PlayerController : MonoBehaviour
         if (!_isClimbing)
             return;
 
-        _targetVelocity.y = _isTryingToClimb ? _climbingSpeed : 0;
+        _rigidBody.useGravity = true;
+        if (Physics.Raycast(transform.position, _modelParent.forward, out RaycastHit hitInfo, 1.0f, _climbMask))
+        {
+            if (!_triggerColliders.Contains(hitInfo.collider))
+                return;
+
+            if (Vector3.Dot(_modelParent.forward, hitInfo.normal) > -.8f)
+                return;
+            
+            _targetVelocity.y = _isTryingToClimb ? _climbingSpeed : 0;
+            _rigidBody.useGravity = !_isTryingToClimb;
+        }
     }
 
     private void StartClimbing()

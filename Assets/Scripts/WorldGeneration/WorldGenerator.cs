@@ -22,6 +22,7 @@ public class WorldGenerator : MonoBehaviour
     private FastNoise _noise;
     private Dictionary<Vector2Int, Chunk> _chunks = new ();
     private Dictionary<Vector2Int, Chunk> _currentLoadedChunks = new ();
+    private List<Chunk> _chunksToSpawn = new();
 
     public int Seed => _seed;
     public Dictionary<Vector2Int, Chunk> Chunks => _chunks;

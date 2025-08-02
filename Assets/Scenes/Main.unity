@@ -577,7 +577,7 @@ MonoBehaviour:
   _player: {fileID: 1802529270}
   _chunkPrefab: {fileID: 1641274420446616536, guid: 3ca1d678980567c41b85bf284e8b86d9,
     type: 3}
-  _worldSize: 2
+  _worldSize: 4
   _seed: 123456789
   _refreshSeedOnGeneration: 1
   _generateOnAwake: 1
@@ -1244,11 +1244,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RunParticles
-      objectReference: {fileID: 0}
-    - target: {fileID: 469096382698512028, guid: 263fcec90f5132f4fb75c91f27941c30,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5266218805198442968, guid: 263fcec90f5132f4fb75c91f27941c30,
         type: 3}
