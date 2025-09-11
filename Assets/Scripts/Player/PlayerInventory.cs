@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using NaughtyAttributes;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
@@ -14,7 +13,8 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private int _rows = 5;
     [SerializeField] private int _columns = 9;
     
-    private InventorySlot[] _inventory; 
+    private InventorySlot[] _inventory;
+    public InventorySlot[] Inventory => _inventory;
         
     private void Awake()
     {
@@ -102,6 +102,7 @@ public class PlayerInventory : MonoBehaviour
             inventorySlot.Item = new Item(item);
             item.Amount = 0;
         }
+        inventorySlot.InventorySlotUpdated();
     }
     
     
@@ -160,4 +161,9 @@ public class InventorySlot
 {
     public bool HasItem;
     public Item Item;
+    public event Action<InventorySlot> OnInventorySlotUpdated = delegate { };
+    public void InventorySlotUpdated()
+    {
+        OnInventorySlotUpdated.Invoke(this);
+    }
 }

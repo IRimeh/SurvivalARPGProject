@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public ItemData _rockData;
+    public ItemData _woodData;
     public ItemManager _itemManager;
     
     [Header("References")]
@@ -85,6 +86,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.P))
         {
             _itemManager.SpawnItem(_rockData, 1, transform.position + Vector3.up, 1);
+        }
+        if (Input.GetKey(KeyCode.I))
+        {
+            _itemManager.SpawnItem(_woodData, 1, transform.position + Vector3.up, 1);
         }
     }
 
