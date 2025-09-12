@@ -106,6 +106,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: itemSlot (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4377262047893090696, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
         type: 3}
       propertyPath: _inventorySlotIndex
@@ -234,6 +244,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: itemSlot (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4377262047893090696, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
         type: 3}
@@ -364,6 +384,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: itemSlot (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4377262047893090696, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
         type: 3}
       propertyPath: _inventorySlotIndex
@@ -492,6 +522,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: itemSlot (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4377262047893090696, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
         type: 3}
@@ -622,6 +662,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: itemSlot (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4377262047893090696, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
         type: 3}
       propertyPath: _inventorySlotIndex
@@ -750,6 +800,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: itemSlot (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4377262047893090696, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
         type: 3}
@@ -880,6 +940,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: itemSlot (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4377262047893090696, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
         type: 3}
       propertyPath: _inventorySlotIndex
@@ -1008,6 +1078,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: itemSlot (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4377262047893090696, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
         type: 3}
@@ -1147,6 +1227,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4142878290820664542, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
+        type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6223987731388165419, guid: 5d8e5bc6cd1c4eb4e9782b2fe0f2194c,
         type: 3}

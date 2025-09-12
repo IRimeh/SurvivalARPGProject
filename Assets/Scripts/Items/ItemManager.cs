@@ -76,6 +76,11 @@ public class ItemManager : ScriptableObject
         return newItem;
     }
 
+    public ItemView SpawnItem(Item item, Vector3 position, float launchForce = 1, Chunk chunk = null)
+    {
+        return SpawnItem(item.ItemData, item.Amount, position, launchForce, chunk);
+    }
+
     public void ReturnToPool(ItemView itemView)
     {
         if (!_usedItemViewPool.Contains(itemView))

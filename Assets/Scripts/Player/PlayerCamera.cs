@@ -1,9 +1,10 @@
+using Player;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerCamera : MonoBehaviour
 {
     [SerializeField] private PlayerController _player;
+    [SerializeField] private PlayerInventory _playerInventory;
     [SerializeField] private float _cameraSensitivity = .1f;
     [SerializeField] private float _cameraRotLerpSpeed = 10.0f;
     [SerializeField] private float _minCameraDistance;
@@ -26,9 +27,16 @@ public class PlayerCamera : MonoBehaviour
 
     private void Update()
     {
-        RotateCamera();
-        SetCameraPosition();
-        CameraZoom();
+        if (_playerInventory.IsUIOpen)
+        {
+            SetCameraPosition();
+        }
+        else
+        {
+            RotateCamera();
+            SetCameraPosition();
+            CameraZoom();
+        }
     }
 
     private void RotateCamera()
