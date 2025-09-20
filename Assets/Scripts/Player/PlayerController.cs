@@ -21,6 +21,10 @@ public class PlayerController : MonoBehaviour
     private ParticleSystem _jumpParticles;
     [SerializeField]
     private LayerMask _climbMask;
+    [SerializeField] 
+    private Transform _rightHandPivot;
+    [SerializeField] 
+    private Transform _bothHandsPivot;
 
     [Header("Movement properties")]
     [SerializeField]
@@ -60,9 +64,17 @@ public class PlayerController : MonoBehaviour
     private bool _isTryingToClimb = false;
     private bool _isClimbing = false;
 
-    private List<Collider> _triggerColliders = new List<Collider>();
+    private Item _holdingItem = null;
+    private int _holdingItemID = -1;
+    private bool _isHoldingItem = false;
+    private ItemView _holdingItemView = null;
 
-    // Start is called before the first frame update
+    private List<Collider> _triggerColliders = new List<Collider>();
+    
+    private static readonly int Speed = Animator.StringToHash("Speed");
+    private static readonly int IsJumping = Animator.StringToHash("IsJumping");
+    private static readonly int IsHoldingItem = Animator.StringToHash("IsHoldingItem");
+
     void Start()
     {
         _rotationLookAtTransform = new GameObject("RotationLookAtTransform").transform;
@@ -70,7 +82,6 @@ public class PlayerController : MonoBehaviour
         _rotationLookAtTransform.position = Vector3.zero;
     }
 
-    // Update is called once per frame
     void Update()
     {
         Inputs();
@@ -93,6 +104,43 @@ public class PlayerController : MonoBehaviour
             _itemManager.SpawnItem(_woodData, 1, transform.position + Vector3.up, 1);
         }
     }
+
+    public void SetHoldingItem(InventorySlot inventorySlot)
+    {
+        int itemId = inventorySlot.HasItem ? inventorySlot.Item.ItemData.Id : -1;
+        bool newIsHoldingItem = inventorySlot.HasItem;
+
+        if (_isHoldingItem == newIsHoldingItem && _holdingItemID == itemId)
+            return;
+        
+        _holdingItem = inventorySlot.Item;
+        _holdingItemID = itemId;
+        _isHoldingItem = newIsHoldingItem;
+        _animator.SetBool(IsHoldingItem, newIsHoldingItem);
+        
+        SpawnHoldingItemView();
+    }
+
+    private void DestroyCurrentHoldingItem()
+    {
+        if (_holdingItemView == null)
+            return;
+
+        _itemManager.ReturnToPool(_holdingItemView);
+        _holdingItemView = null;
+    }
+
+    private void SpawnHoldingItemView()
+    {
+        DestroyCurrentHoldingItem();
+
+        if (!_isHoldingItem)
+            return;
+        
+        _holdingItemView = _itemManager.SpawnStationaryItem(_holdingItem.ItemData, _bothHandsPivot);
+    }
+    
+    
 
     private void Climbing()
     {
@@ -143,7 +191,7 @@ public class PlayerController : MonoBehaviour
     private void CheckGrounded()
     {
         _isGrounded = Physics.Raycast(transform.position + (Vector3.up * (_groundCheckDist * .5f)), Vector3.down, _groundCheckDist);
-        _animator.SetBool("IsJumping", !_isGrounded);
+        _animator.SetBool(IsJumping, !_isGrounded);
         if (!_isGrounded)
         {
             _runParticles.Stop();
@@ -207,7 +255,7 @@ public class PlayerController : MonoBehaviour
         _modelParent.transform.rotation = Quaternion.Slerp(rot, _modelParent.transform.rotation, Time.deltaTime * _rotateSpeed);
         
         // Set animator parameters
-        _animator.SetFloat("Speed", _targetVelocity.magnitude);
+        _animator.SetFloat(Speed, _targetVelocity.magnitude);
     }
 
     private void Jump(float multiplier = 1)

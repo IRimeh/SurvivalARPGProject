@@ -5,13 +5,25 @@ namespace Player
     [Serializable]
     public class InventorySlot
     {
-        public bool HasItem;
-        public Item Item;
+        public int InventorySlotID { get; private set; }
+        public bool HasItem { get; private set; }
+        public Item Item { get; private set; }
         public event Action<InventorySlot> OnInventorySlotUpdated = delegate { };
+
+        public InventorySlot(int inventorySlotID)
+        {
+            InventorySlotID = inventorySlotID;
+        }
     
         public void InventorySlotUpdated()
         {
             OnInventorySlotUpdated.Invoke(this);
+        }
+
+        public void SetItem(Item item)
+        {
+            Item = item;
+            HasItem = item != null && item.Amount > 0;
         }
 
         public bool TryTakeItemFromSlot(out Item item)

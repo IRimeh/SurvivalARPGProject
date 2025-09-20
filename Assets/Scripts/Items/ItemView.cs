@@ -7,6 +7,7 @@ public class ItemView : MonoBehaviour
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private MeshFilter _meshFilter;
     [SerializeField] private Rigidbody _rigidBody;
+    [SerializeField] private Collider _collider;
     [SerializeField] private float _pickupAbleDelay = 0.1f;
     [SerializeField] [ReadOnly] private Item _item;
 
@@ -14,16 +15,21 @@ public class ItemView : MonoBehaviour
 
     public Item Item => _item;
     public Rigidbody RigidBody => _rigidBody;
+    public Collider Collider => _collider;
     public bool PickupAble => _pickupAble;
     public Chunk Chunk { get; private set; }
 
-    public void SetItem(Item item)
+    public void SetItem(Item item, bool pickupAble = true)
     {
         _item = item;
         _meshRenderer.sharedMaterial = item.ItemData.ItemMaterial;
         _meshFilter.sharedMesh = item.ItemData.ItemMesh;
         _pickupAble = false;
-        StartCoroutine(IBecomePickupAble());
+        _rigidBody.isKinematic = !pickupAble;
+        _collider.enabled = pickupAble;
+        
+        if(pickupAble)
+            StartCoroutine(IBecomePickupAble());
     }
 
     public void SetChunk(Chunk chunk)

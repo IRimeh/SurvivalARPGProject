@@ -32,8 +32,8 @@ public class ItemManager : ScriptableObject
             _availableItemViewPool.Add(poolItem);
         }
     }
-    
-    public ItemView SpawnItem(ItemData itemData, int amount, Vector3 position, float launchForce = 1, Chunk chunk = null)
+
+    private ItemView GetItemViewFromPool()
     {
         ItemView newItem = null;
         if (_availableItemViewPool.Count <= 0)
@@ -45,6 +45,12 @@ public class ItemManager : ScriptableObject
         {
             newItem = _availableItemViewPool[^1];
         }
+        return newItem;
+    }
+    
+    public ItemView SpawnItem(ItemData itemData, int amount, Vector3 position, float launchForce = 1, Chunk chunk = null)
+    {
+        ItemView newItem = GetItemViewFromPool();
 
         Quaternion rot = Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0);
         _availableItemViewPool.Remove(newItem);
@@ -81,6 +87,27 @@ public class ItemManager : ScriptableObject
         return SpawnItem(item.ItemData, item.Amount, position, launchForce, chunk);
     }
 
+    public ItemView SpawnStationaryItem(ItemData itemData, Transform parent)
+    {
+        ItemView newItem = GetItemViewFromPool();
+
+        Quaternion rot = Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0);
+        _availableItemViewPool.Remove(newItem);
+        _usedItemViewPool.Add(newItem);
+        newItem.gameObject.SetActive(true);
+        newItem.transform.SetParent(parent);
+        newItem.transform.localPosition = Vector3.zero;
+        newItem.transform.localRotation = rot;
+        newItem.SetItem(new Item()
+        {
+            ItemData = itemData,
+            Amount = 0,
+            Id = itemData.Id
+        }, false);
+        
+        return newItem;
+    }
+
     public void ReturnToPool(ItemView itemView)
     {
         if (!_usedItemViewPool.Contains(itemView))
@@ -92,8 +119,10 @@ public class ItemManager : ScriptableObject
         _availableItemViewPool.Add(itemView);
         itemView.RigidBody.isKinematic = true;
         itemView.RigidBody.linearVelocity = Vector3.zero;
+        itemView.transform.SetParent(_itemManagerView.transform);
 
-        itemView.Chunk.RemoveItem(itemView);
+        if(itemView.PickupAble)
+            itemView.Chunk.RemoveItem(itemView);
     }
 
     [Button]

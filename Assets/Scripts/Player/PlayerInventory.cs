@@ -19,6 +19,7 @@ namespace Player
         
         private bool _isUIOpen = false;
         public bool IsUIOpen => _isUIOpen;
+        public int HotbarSize => _columns;
         
         private void Awake()
         {
@@ -29,20 +30,14 @@ namespace Player
         private void InitEmptyInventory()
         {
             for (int i = 0; i < _inventory.Length; i++)
-            {
-                _inventory[i] = new InventorySlot()
-                {
-                    HasItem = false,
-                    Item = null
-                };
-            }
+                _inventory[i] = new InventorySlot(i);
         }
 
-        private bool TryGetFirstAvailableSlot(Item item, out int inventorySlotIdx)
+        private bool TryGetFirstAvailableSlot(Item item, out int inventorySlotIdx, int indexToStartAt = 0)
         {
             inventorySlotIdx = -1;
             int emptySlotIdx = -1;
-            for (int i = 0; i < _inventory.Length; i++)
+            for (int i = indexToStartAt; i < _inventory.Length; i++)
             {
                 InventorySlot inventorySlot = _inventory[i];
                 if (!inventorySlot.HasItem && emptySlotIdx == -1)
@@ -67,11 +62,11 @@ namespace Player
             return false;
         }
 
-        public bool TryAddItem(Item item)
+        public bool TryAddItem(Item item, int indexToStartAt = 0)
         {
             while (item.Amount > 0)
             {
-                if (TryGetFirstAvailableSlot(item, out int inventorySlotIdx))
+                if (TryGetFirstAvailableSlot(item, out int inventorySlotIdx, indexToStartAt))
                 {
                     AddItem(_inventory[inventorySlotIdx], item);
                 }
@@ -102,8 +97,7 @@ namespace Player
             }
             else
             {
-                inventorySlot.HasItem = true;
-                inventorySlot.Item = new Item(item);
+                inventorySlot.SetItem(new Item(item));
                 item.Amount = 0;
             }
             inventorySlot.InventorySlotUpdated();
@@ -112,6 +106,11 @@ namespace Player
         public void SetIsUIOpen(bool isOpen)
         {
             _isUIOpen = isOpen;
+        }
+
+        public bool IsInventorySlotPartOfHotbar(InventorySlot inventorySlot)
+        {
+            return inventorySlot.InventorySlotID < 9;
         }
     
     

@@ -1,5 +1,5 @@
-using System;
 using Events;
+using Locators;
 using Player;
 using TMPro;
 using UnityEngine;
@@ -16,6 +16,7 @@ namespace UI.Inventory
         [SerializeField] private Image _iconImage;
         [SerializeField] private TextMeshProUGUI _amount;
         [SerializeField] private Transform _hoverTransform;
+        [SerializeField] private Transform _selectedTransform;
         
         [Space]
         [SerializeField] private InventorySlotEvent _onLMBInventorySlotEvent;
@@ -25,6 +26,7 @@ namespace UI.Inventory
         [SerializeField] private InputActionReference _LMBInputAction;
         [SerializeField] private InputActionReference _RMBInputAction;
 
+        private bool _isSelected = false;
         private bool _isMouseOver = false;
         private InventorySlot _inventorySlot;
         
@@ -48,6 +50,15 @@ namespace UI.Inventory
         private void OnDisable()
         {
             OnPointerExit(null);
+        }
+
+        public void Select(bool select)
+        {
+            if (_isSelected == select)
+                return;
+
+            _isSelected = select;
+            _selectedTransform.gameObject.SetActive(select);
         }
 
         private void UpdateInventorySlotUI(InventorySlot inventorySlot)

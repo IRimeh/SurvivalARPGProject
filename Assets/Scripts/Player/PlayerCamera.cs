@@ -1,5 +1,6 @@
 using Player;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerCamera : MonoBehaviour
     [SerializeField] private float _minCameraDistance;
     [SerializeField] private float _maxCameraDistance;
     [SerializeField] private float _cameraZoomSpeed;
+    [SerializeField] private InputActionReference _controlActionReference;
 
     private float _currentCameraDistance;
     private Vector3 _defaultCameraRot;
@@ -59,6 +61,9 @@ public class PlayerCamera : MonoBehaviour
 
     private void CameraZoom()
     {
+        if (!_controlActionReference.action.IsPressed())
+            return;
+        
         _currentCameraDistance = Mathf.Clamp(_currentCameraDistance - Input.mouseScrollDelta.y * _cameraZoomSpeed, _minCameraDistance, _maxCameraDistance);
     }
 

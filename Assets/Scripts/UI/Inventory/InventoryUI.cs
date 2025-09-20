@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Events;
+using Locators;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,14 +12,29 @@ namespace UI.Inventory
         [SerializeField] private Transform _inventoryParentTransform;
         [SerializeField] private Transform _hotbarParentTransform;
         [SerializeField] private IndividualItemUI _holdingItemUI;
-        [SerializeField] private InputActionReference _shiftAction;
-        [SerializeField] private InputActionReference _mousePosition;
         [SerializeField] private PlayerInventoryLocator _playerInventoryLocator;
+        [SerializeField] private PlayerControllerLocator _playerControllerLocator;
         [SerializeField] private ItemManager _itemManager;
+        [SerializeField] private List<InventorySlotUI> _hotbarInventorySlotUI;
 
-        [Space]
+        [Header("Events")]
         [SerializeField] private InventorySlotEvent _onLMBInventorySlotEvent;
         [SerializeField] private InventorySlotEvent _onRMBInventorySlotEvent;
+        
+        [Header("Input")]
+        [SerializeField] private InputActionReference _shiftAction;
+        [SerializeField] private InputActionReference _controlAction;
+        [SerializeField] private InputActionReference _mousePosition;
+        [SerializeField] private InputActionReference _scrollAction;
+        [SerializeField] private InputActionReference _action1;
+        [SerializeField] private InputActionReference _action2;
+        [SerializeField] private InputActionReference _action3;
+        [SerializeField] private InputActionReference _action4;
+        [SerializeField] private InputActionReference _action5;
+        [SerializeField] private InputActionReference _action6;
+        [SerializeField] private InputActionReference _action7;
+        [SerializeField] private InputActionReference _action8;
+        [SerializeField] private InputActionReference _action9;
 
         private RectTransform _rectTransform;
         private bool _isInventoryOpen = false;
@@ -25,17 +42,44 @@ namespace UI.Inventory
         private Item _holdingItem;
         private bool _isHoldingItem = false;
 
+        private InventorySlot _selectedHotbarSlot = null;
+        private int _selectedHotbarIndex = -1;
+
         private void Start()
         {
             _rectTransform = transform as RectTransform;
             _onLMBInventorySlotEvent.Register(LMBInventorySlot);
             _onRMBInventorySlotEvent.Register(RMBInventorySlot);
+            
+            _scrollAction.action.performed += OnScrollActionPerformed;
+            _action1.action.performed += OnNumberKeyPerformed;
+            _action2.action.performed += OnNumberKeyPerformed;
+            _action3.action.performed += OnNumberKeyPerformed;
+            _action4.action.performed += OnNumberKeyPerformed;
+            _action5.action.performed += OnNumberKeyPerformed;
+            _action6.action.performed += OnNumberKeyPerformed;
+            _action7.action.performed += OnNumberKeyPerformed;
+            _action8.action.performed += OnNumberKeyPerformed;
+            _action9.action.performed += OnNumberKeyPerformed;
+            
+            SelectHotbarSlot(0);
         }
 
         private void OnDestroy()
         {
             _onLMBInventorySlotEvent.Unregister(LMBInventorySlot);
             _onRMBInventorySlotEvent.Unregister(RMBInventorySlot);
+            
+            _scrollAction.action.performed -= OnScrollActionPerformed;
+            _action1.action.performed -= OnNumberKeyPerformed;
+            _action2.action.performed -= OnNumberKeyPerformed;
+            _action3.action.performed -= OnNumberKeyPerformed;
+            _action4.action.performed -= OnNumberKeyPerformed;
+            _action5.action.performed -= OnNumberKeyPerformed;
+            _action6.action.performed -= OnNumberKeyPerformed;
+            _action7.action.performed -= OnNumberKeyPerformed;
+            _action8.action.performed -= OnNumberKeyPerformed;
+            _action9.action.performed -= OnNumberKeyPerformed;
         }
 
         private void Update()
@@ -50,6 +94,57 @@ namespace UI.Inventory
 
             UpdateHoldingItemUIPosition();
         }
+
+        
+        
+        private void OnScrollActionPerformed(InputAction.CallbackContext obj)
+        {
+            if (_controlAction.action.IsPressed())
+                return;
+            
+            var inventory = _playerInventoryLocator.Value;
+            float scroll = _scrollAction.action.ReadValue<Vector2>().y;
+            int newHotbarIndex = _selectedHotbarIndex - (int)Mathf.Sign(scroll);
+            
+            if (newHotbarIndex < 0)
+                newHotbarIndex = inventory.HotbarSize - 1;
+
+            if (newHotbarIndex >= inventory.HotbarSize)
+                newHotbarIndex = 0;
+
+            SelectHotbarSlot(newHotbarIndex);
+        }
+
+        private void OnNumberKeyPerformed(InputAction.CallbackContext obj)
+        {
+            int key = int.Parse(obj.action.name);
+            SelectHotbarSlot(key - 1);
+        }
+
+        private void SelectHotbarSlot(int hotbarSlotIndex)
+        {
+            if (_selectedHotbarIndex == hotbarSlotIndex)
+                return;
+
+            if (_selectedHotbarSlot != null)
+                _selectedHotbarSlot.OnInventorySlotUpdated -= OnSelectedHotbarSlotUpdated;
+            
+            if(_selectedHotbarIndex >= 0)
+                _hotbarInventorySlotUI[_selectedHotbarIndex].Select(false);
+            
+            _selectedHotbarIndex = hotbarSlotIndex;
+            _selectedHotbarSlot = _playerInventoryLocator.Value.Inventory[hotbarSlotIndex];
+            _selectedHotbarSlot.OnInventorySlotUpdated += OnSelectedHotbarSlotUpdated;
+            _hotbarInventorySlotUI[hotbarSlotIndex].Select(true);
+            OnSelectedHotbarSlotUpdated(_selectedHotbarSlot);
+        }
+
+        private void OnSelectedHotbarSlotUpdated(InventorySlot inventorySlot)
+        {
+            _playerControllerLocator.Value.SetHoldingItem(inventorySlot);
+        }
+        
+        
 
         private void OpenInventory()
         {
@@ -99,8 +194,15 @@ namespace UI.Inventory
         {
             if (!_isHoldingItem)
             {
-                _isHoldingItem = inventorySlot.TryTakeItemFromSlot(out _holdingItem);
-                UpdateHoldingItemUIState();
+                if (_shiftAction.action.IsPressed())
+                {
+                    ShiftLMBInventorySlot(inventorySlot);
+                }
+                else
+                {
+                    _isHoldingItem = inventorySlot.TryTakeItemFromSlot(out _holdingItem);
+                    UpdateHoldingItemUIState();
+                }
                 return;
             }
             
@@ -108,6 +210,18 @@ namespace UI.Inventory
             _holdingItem = leftOverItem;
             _isHoldingItem = leftOverItem.Amount > 0;
             UpdateHoldingItemUIState();
+        }
+
+        private void ShiftLMBInventorySlot(InventorySlot inventorySlot)
+        {
+            var inventory = _playerInventoryLocator.Value;
+            if (inventorySlot.TryTakeItemFromSlot(out Item item))
+            {
+                if (inventory.IsInventorySlotPartOfHotbar(inventorySlot))
+                    inventory.TryAddItem(item, inventory.HotbarSize);
+                else
+                    inventory.TryAddItem(item);
+            }
         }
         
         private void RMBInventorySlot(InventorySlot inventorySlot)
