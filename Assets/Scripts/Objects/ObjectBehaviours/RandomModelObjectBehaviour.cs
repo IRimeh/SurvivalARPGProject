@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "RandomModelBehaviour", menuName = "ScriptableObjects/Objects/ObjectBehaviours/RandomModelBehaviour", order = 0)]
-public class RandomModelBehaviour : ObjectBehaviour
+public class RandomModelObjectBehaviour : ObjectBehaviour
 {
     [SerializeField] 
     private List<GameObject> _modelPrefabs;

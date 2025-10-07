@@ -31,6 +31,12 @@ public class ObjectView : MonoBehaviour
             _objectBehaviours.Add(behaviour);
         }
     }
+
+    public void DestroyObject()
+    {
+        _chunk.RemoveObject(this);
+        Destroy(gameObject);
+    }
     
     public void ApplyObjectSaveData(ObjectSaveData objectSaveData)
     {
@@ -63,5 +69,19 @@ public class ObjectView : MonoBehaviour
         Vector3 cornerPos = _chunk.transform.position - new Vector3((float)Chunk.ChunkSize * .5f, 0, (float)Chunk.ChunkSize * .5f);
         Vector3 offset = new Vector3(relativePos.x * _cellSize + _halfCellSize, 0, relativePos.y * _cellSize + _halfCellSize);
         transform.position = cornerPos + offset;
+    }
+
+    public bool TryGetObjectBehaviour<T>(out T objectBehaviour) where T : ObjectBehaviour
+    {
+        foreach (ObjectBehaviour behaviour in _objectBehaviours)
+        {
+            if (behaviour is not T outObjectBehaviour)
+                continue;
+            
+            objectBehaviour = outObjectBehaviour;
+            return true;
+        }
+        objectBehaviour = null;
+        return false;
     }
 }

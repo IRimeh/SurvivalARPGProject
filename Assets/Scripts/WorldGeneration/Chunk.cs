@@ -344,4 +344,9 @@ public class Chunk : MonoBehaviour
     {
         _items.Remove(itemView);
     }
+
+    public void RemoveObject(ObjectView objectView)
+    {
+        _objects[objectView.RelativePos.x, objectView.RelativePos.y] = null;
+    }
 }

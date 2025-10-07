@@ -274,11 +274,42 @@ MonoBehaviour:
   _playerInventory: {fileID: 1802529271}
   _cameraSensitivity: 0.2
   _cameraRotLerpSpeed: 30
-  _minCameraDistance: 30
+  _minCameraDistance: 25
   _maxCameraDistance: 60
   _cameraZoomSpeed: 3
   _controlActionReference: {fileID: -1689866609615487085, guid: 0a7e4bdfe34c1d343b7fcf28d1511598,
     type: 3}
+--- !u!1 &370113232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 370113233}
+  m_Layer: 8
+  m_Name: MouseDirectionAlignedBehaviourSpawnParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &370113233
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370113232}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1802529267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &407203401
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,13 +334,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 407203401}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 432337646}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +610,68 @@ Transform:
   - {fileID: 1924434857}
   - {fileID: 1214082505}
   - {fileID: 7384807845637404340}
+  m_Father: {fileID: 1802529267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &918573505
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 918573506}
+  m_Layer: 8
+  m_Name: StaticBehaviourSpawnParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &918573506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918573505}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1802529267}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1034530324
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1034530325}
+  m_Layer: 8
+  m_Name: PlayerAlignedBehaviourSpawnParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1034530325
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034530324}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 1802529267}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1115651972
@@ -937,6 +1030,9 @@ Transform:
   m_Children:
   - {fileID: 886308867}
   - {fileID: 1137084071}
+  - {fileID: 918573506}
+  - {fileID: 1034530325}
+  - {fileID: 370113233}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1802529268
@@ -1002,6 +1098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rockData: {fileID: 11400000, guid: df31538405b112147a31665747f899d3, type: 2}
+  _swordData: {fileID: 11400000, guid: d4a7b28df59a9014ca8d5f565755e72e, type: 2}
   _woodData: {fileID: 11400000, guid: 746087e1b2602744eb05737caeff2cd8, type: 2}
   _itemManager: {fileID: 11400000, guid: 3280c4a5cbce01f449a9ba6272ccf8c2, type: 2}
   _animator: {fileID: 1924434858}
@@ -1014,6 +1111,9 @@ MonoBehaviour:
     m_Bits: 65
   _rightHandPivot: {fileID: 407203402}
   _bothHandsPivot: {fileID: 1756113855}
+  _staticBehaviourSpawnParent: {fileID: 918573506}
+  _playerAlignedBehaviourSpawnParent: {fileID: 1034530325}
+  _mouseDirectionAlignedBehaviourSpawnParent: {fileID: 370113233}
   _maxSpeed: 15
   _sprintMaxSpeed: 25
   _acceleration: 10

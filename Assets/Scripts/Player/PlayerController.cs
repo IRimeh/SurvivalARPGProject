@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using Items.ItemBehaviours;
 using Player;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public ItemData _rockData;
+    public ItemData _swordData;
     public ItemData _woodData;
     public ItemManager _itemManager;
     
@@ -25,6 +27,12 @@ public class PlayerController : MonoBehaviour
     private Transform _rightHandPivot;
     [SerializeField] 
     private Transform _bothHandsPivot;
+    [SerializeField] 
+    private Transform _staticBehaviourSpawnParent;
+    [SerializeField] 
+    private Transform _playerAlignedBehaviourSpawnParent;
+    [SerializeField] 
+    private Transform _mouseDirectionAlignedBehaviourSpawnParent;
 
     [Header("Movement properties")]
     [SerializeField]
@@ -85,7 +93,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Inputs();
+        ItemInputs();
         UpdateAnimations();
+        UpdateSpawnParentTransforms();
         CheckGrounded();
         Climbing();
         UpdateVelocity();
@@ -93,7 +103,7 @@ public class PlayerController : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.O))
         {
-            _itemManager.SpawnItem(_rockData, 1, transform.position + Vector3.up, 1);
+            _itemManager.SpawnItem(_swordData, 1, transform.position + Vector3.up, 1);
         }
         if (Input.GetKey(KeyCode.P))
         {
@@ -116,7 +126,8 @@ public class PlayerController : MonoBehaviour
         _holdingItem = inventorySlot.Item;
         _holdingItemID = itemId;
         _isHoldingItem = newIsHoldingItem;
-        _animator.SetBool(IsHoldingItem, newIsHoldingItem);
+        bool doubleHandedHolding = newIsHoldingItem && _holdingItem.ItemData.HoldingStyle == ItemData.ItemHoldingStyle.TwoHanded;
+        _animator.SetBool(IsHoldingItem, doubleHandedHolding);
         
         SpawnHoldingItemView();
     }
@@ -136,8 +147,17 @@ public class PlayerController : MonoBehaviour
 
         if (!_isHoldingItem)
             return;
-        
-        _holdingItemView = _itemManager.SpawnStationaryItem(_holdingItem.ItemData, _bothHandsPivot);
+
+        switch (_holdingItem.ItemData.HoldingStyle)
+        {
+            case ItemData.ItemHoldingStyle.TwoHanded:
+                _holdingItemView = _itemManager.SpawnStationaryItem(_holdingItem.ItemData, _bothHandsPivot);
+                break;
+            case ItemData.ItemHoldingStyle.OneHanded:
+                _holdingItemView = _itemManager.SpawnStationaryItem(_holdingItem.ItemData, _rightHandPivot);
+                break;
+        }
+        _holdingItemView.transform.localRotation = Quaternion.identity;
     }
     
     
@@ -241,6 +261,43 @@ public class PlayerController : MonoBehaviour
         _targetVelocity = new Vector3(MaxSpeed * targetDir.x, _rigidBody.linearVelocity.y, MaxSpeed * targetDir.z);
     }
 
+    private void ItemInputs()
+    {
+        if (!_isHoldingItem)
+            return;
+
+        ItemBehaviour.ItemBehaviourDTO itemBehaviourDto = new ItemBehaviour.ItemBehaviourDTO()
+        {
+            StaticSpawnParent = _staticBehaviourSpawnParent,
+            PlayerAlignedSpawnParent = _playerAlignedBehaviourSpawnParent,
+            MouseDirectionAlignedSpawnParent = _mouseDirectionAlignedBehaviourSpawnParent
+        };
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            foreach (ItemBehaviour itemBehaviour in _holdingItem.ItemData.ItemBehaviours)
+                itemBehaviour.OnLeftClick(itemBehaviourDto);
+        }
+        
+        if (Input.GetMouseButtonDown(1))
+        {
+            foreach (ItemBehaviour itemBehaviour in _holdingItem.ItemData.ItemBehaviours)
+                itemBehaviour.OnRightClick(itemBehaviourDto);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            foreach (ItemBehaviour itemBehaviour in _holdingItem.ItemData.ItemBehaviours)
+                itemBehaviour.OnQPress(itemBehaviourDto);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            foreach (ItemBehaviour itemBehaviour in _holdingItem.ItemData.ItemBehaviours)
+                itemBehaviour.OnFPress(itemBehaviourDto);
+        }
+    }
+
     private void UpdateVelocity()
     {
         _rigidBody.linearVelocity = Vector3.Lerp(_rigidBody.linearVelocity, _targetVelocity, _acceleration * Time.deltaTime);
@@ -256,6 +313,11 @@ public class PlayerController : MonoBehaviour
         
         // Set animator parameters
         _animator.SetFloat(Speed, _targetVelocity.magnitude);
+    }
+
+    private void UpdateSpawnParentTransforms()
+    {
+        _playerAlignedBehaviourSpawnParent.transform.rotation = _modelParent.transform.rotation;
     }
 
     private void Jump(float multiplier = 1)
